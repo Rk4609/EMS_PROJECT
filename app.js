@@ -1,5 +1,6 @@
 import cookieParser from "cookie-parser";
-import express, { urlencoded } from "express";
+import express, { urlencoded} from "express";
+import cors from "express"
 
 const app = express();
 
@@ -22,5 +23,11 @@ app.use(express.static("public"));
 
 //server to user browser for acccess cookies
 app.use(cookieParser());
+
+
+//import Router 
+import employeeRouter from "./routes/employee.routes.js"
+
+app.use("/employee/v2",employeeRouter)
 
 export { app };

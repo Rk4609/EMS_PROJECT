@@ -15,10 +15,10 @@ const employeeSchema = new mongoose.Schema(
   { timestamps: true },
 );
 // database save to before create hash password
-employeeSchema.pre("save", async function (next) {
+employeeSchema.pre("save", async function () {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
-  next();
+  
 });
 
 // compare the password
@@ -42,14 +42,14 @@ employeeSchema.methods.generateAccessToken = function () {
 };
 
 // generate refresh token
-employeeSchema.methods.generateAccessToken = function () {
+employeeSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
       _id: this._id,
     },
     process.env.REFRESH_TOKEN_SECRET,
     {
-      expiresIn: process.env.REFRESH_TOKEN_SECRET,
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
     },
   );
 };
